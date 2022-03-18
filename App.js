@@ -19,40 +19,98 @@ import {
 
 
 const App = () => {
-  const [number , setnumber] = useState({num1:0 , num2:0})
 
-  const onHandlingClickAdd = () => {
-    setnumber({num1:number.num1+1 , num2: number.num2+5})
-  };
-  const onHandlingClickReset = () => {
-    setnumber({num1:0 , num2:0})
-  };
 
   return (
-    <View style={styles.body}>
-      <Text style={styles.Text}>first add {number.num1}</Text>
-      <Button title='Add' style={styles.butt} onPress={onHandlingClickAdd}></Button>
-      <Button title='reset' style={styles.butt} onPress={onHandlingClickReset}></Button>
-      <Text style={styles.Text}>Second add {number.num2} </Text>
-    </View>
+      <View style={styles.body}>
+
+        <View style={styles.view1}>
+          <View style={styles.component1}><Text>1</Text></View>
+          <View style={styles.component2}><Text>1</Text></View>
+          <View style={styles.component3}><Text>1</Text></View>
+        </View>
+
+        <View style={styles.view2}>
+          <Text style={styles.component4}>4</Text>
+        </View>
+
+        <View style={styles.view3}>
+          <Text style={styles.component5}>5</Text>
+        </View>
+
+        <View style={styles.view4}>
+        <View style={styles.component6}><Text>6</Text></View>
+        <View style={styles.component7}><Text>7</Text></View>
+        </View>
+      </View>
   );
 };
 
 const styles = StyleSheet.create({
   body:{
-    flex: 1,
-    backgroundColor:'#ffffff',
-    alignItems : 'center',
+    flex:1,
+  },
+  view1 : { 
+    flex:1,
+    flexDirection:"row",
+  },
+  view2 : {
+    flex:1,
+    flexDirection: "row",
     justifyContent:'center',
   },
-  butt : {
-    padding:'20px',
+  view3 : {
+    flex:1,
+    flexDirection: "row",
+    justifyContent:'center',
   },
-  Text : {
-    color:'#ff00ff',
+  view4 : {
+    flex:7,
+    flexDirection: "row"
+  },
+  component1 : {
+    flex:1,
+    alignItems : 'center',
+    justifyContent:'center',
+    backgroundColor:'#00d4ff'
+  },
+  component2 : {
+    flex:2,
+    alignItems : 'center',
+    justifyContent:'center',
+    backgroundColor : '#ff00ed'
+  },
+  component3 : {
+    flex:3,
+    alignItems : 'center',
+    justifyContent:'center',
+    backgroundColor:'#fffc00'
+  },
+  component4 : {
+    flex:1,
+    textAlign:'center',
     fontSize : 20,
-    fontStyle:'italic',
-    margin:10,
+    padding:20,
+    backgroundColor : '#ff0000'
+  },
+  component5 : {
+    flex:1,
+    textAlign:'center',
+    fontSize : 20,
+    padding:20,
+    backgroundColor : '#00ff19'
+  },
+  component6 : {
+    flex:1,
+    alignItems : 'center',
+    justifyContent:'center',
+    backgroundColor: '#ffffff'
+  },
+  component7 : {
+    flex:1,
+    alignItems : 'center',
+    justifyContent:'center',
+    backgroundColor : '#1400ff'
   },
 });
 
