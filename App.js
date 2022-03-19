@@ -6,112 +6,80 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
+import React, {useState , refreshControl} from 'react';
 
 import {
   StyleSheet,
   Text,
   View,
-  Button,
+  ScrollView,
+  RefreshControl,
 } from 'react-native';
 
 
 
 
 const App = () => {
+  const [Items , setItems] = useState([
+    {key : 1 , Item:1},
+    {key : 2 , Item:2},
+    {key : 3 , Item:3},
+    {key : 4 , Item:4},
+    {key : 5 , Item:5},
+    {key : 6 , Item:6},
+    {key : 7 , Item:7},
+    {key : 8 , Item:8},
+    {key : 9 , Item:9},
+    {key : 10 , Item:10},
+  ]
+  )
 
+  const [Refreshing , setRefreshing] = useState (false)
+
+  const onrefresh = () => {
+    setRefreshing(true);
+    setItems([...Items , {key : Items[Items.length-1].key + 1 , Item : Items[Items.length-1].Item +1 }]);
+    setRefreshing(false);
+  }
 
   return (
-      <View style={styles.body}>
+    <ScrollView 
+      tyle={styles.body}
+      refreshControl={
+        <RefreshControl 
+        refreshing={Refreshing}
+        onRefresh={onrefresh}
+        colors={['#ff00ff']}
+        />
+      }
+      >
+          {
+            Items.map((e)=>{
+              return(
+                <View key={e.key}>
+                    <Text style={styles.text}>{e.Item}</Text>
+                </View>
+              )
+            })
+          }  
+    </ScrollView>
 
-        <View style={styles.view1}>
-          <View style={styles.component1}><Text>1</Text></View>
-          <View style={styles.component2}><Text>1</Text></View>
-          <View style={styles.component3}><Text>1</Text></View>
-        </View>
-
-        <View style={styles.view2}>
-          <Text style={styles.component4}>4</Text>
-        </View>
-
-        <View style={styles.view3}>
-          <Text style={styles.component5}>5</Text>
-        </View>
-
-        <View style={styles.view4}>
-        <View style={styles.component6}><Text>6</Text></View>
-        <View style={styles.component7}><Text>7</Text></View>
-        </View>
-      </View>
   );
 };
 
 const styles = StyleSheet.create({
   body:{
     flex:1,
+    flexDirection: 'column',
+    backgroundColor : '#ffffff',
+    alignItems:'stretch',
   },
-  view1 : { 
-    flex:1,
-    flexDirection:"row",
-  },
-  view2 : {
-    flex:1,
-    flexDirection: "row",
-    justifyContent:'center',
-  },
-  view3 : {
-    flex:1,
-    flexDirection: "row",
-    justifyContent:'center',
-  },
-  view4 : {
-    flex:7,
-    flexDirection: "row"
-  },
-  component1 : {
-    flex:1,
-    alignItems : 'center',
-    justifyContent:'center',
-    backgroundColor:'#00d4ff'
-  },
-  component2 : {
-    flex:2,
-    alignItems : 'center',
-    justifyContent:'center',
-    backgroundColor : '#ff00ed'
-  },
-  component3 : {
-    flex:3,
-    alignItems : 'center',
-    justifyContent:'center',
-    backgroundColor:'#fffc00'
-  },
-  component4 : {
-    flex:1,
+  text : {
+    fontSize: 40,
+    backgroundColor:'#ff2aed',
     textAlign:'center',
-    fontSize : 20,
-    padding:20,
-    backgroundColor : '#ff0000'
-  },
-  component5 : {
-    flex:1,
-    textAlign:'center',
-    fontSize : 20,
-    padding:20,
-    backgroundColor : '#00ff19'
-  },
-  component6 : {
-    flex:1,
-    alignItems : 'center',
-    justifyContent:'center',
-    backgroundColor: '#ffffff'
-  },
-  component7 : {
-    flex:1,
-    alignItems : 'center',
-    justifyContent:'center',
-    backgroundColor : '#1400ff'
-  },
+    margin:10,
+  }
 });
 
 export default App;
