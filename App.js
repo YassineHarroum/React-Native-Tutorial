@@ -6,80 +6,90 @@
  * @flow strict-local
  */
 
-import React, {useState , refreshControl} from 'react';
+ import React, {useState , refreshControl} from 'react';
 
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  RefreshControl,
-} from 'react-native';
-
-
-
-
-const App = () => {
-  const [Items , setItems] = useState([
-    {key : 1 , Item:1},
-    {key : 2 , Item:2},
-    {key : 3 , Item:3},
-    {key : 4 , Item:4},
-    {key : 5 , Item:5},
-    {key : 6 , Item:6},
-    {key : 7 , Item:7},
-    {key : 8 , Item:8},
-    {key : 9 , Item:9},
-    {key : 10 , Item:10},
-  ]
-  )
-
-  const [Refreshing , setRefreshing] = useState (false)
-
-  const onrefresh = () => {
-    setRefreshing(true);
-    setItems([...Items , {key : Items[Items.length-1].key + 1 , Item : Items[Items.length-1].Item +1 }]);
-    setRefreshing(false);
-  }
-
-  return (
-    <ScrollView 
-      tyle={styles.body}
-      refreshControl={
-        <RefreshControl 
-        refreshing={Refreshing}
-        onRefresh={onrefresh}
-        colors={['#ff00ff']}
-        />
-      }
-      >
-          {
-            Items.map((e)=>{
-              return(
-                <View key={e.key}>
-                    <Text style={styles.text}>{e.Item}</Text>
-                </View>
-              )
-            })
-          }  
-    </ScrollView>
-
-  );
-};
-
-const styles = StyleSheet.create({
-  body:{
-    flex:1,
-    flexDirection: 'column',
-    backgroundColor : '#ffffff',
-    alignItems:'stretch',
-  },
-  text : {
-    fontSize: 40,
-    backgroundColor:'#ff2aed',
-    textAlign:'center',
-    margin:10,
-  }
-});
-
-export default App;
+ import {
+   StyleSheet,
+   Text,
+   View,
+   SectionList,
+   RefreshControl,
+ } from 'react-native';
+ 
+ 
+ const App = () => {
+ 
+     const [refreshing,setrefreshing] = useState(false);
+     
+     const [DATA , setDATA ] = useState ([
+       {
+         title: 'title 1',
+         data: ['Item 1-1','Item 1-2'],
+       },
+       {
+         title: 'title 1',
+         data: ['Item 1-1','Item 1-2'],
+       },
+     ])
+ 
+     const onrefresh = ()=>{
+       setrefreshing(true);
+       setDATA ([...DATA , {
+         title: 'title '+ DATA.length.toString(),
+         data: ['Item '+DATA.length.toString()+'-1','Item '+DATA.length.toString()+'-2']
+       }]);
+       setrefreshing(false);
+     }
+ 
+   return (
+     <SectionList
+       style={styles.sectio}
+       keyExtractor={(item,index)=> index.toString()}
+       sections={DATA}
+       renderItem={({item}) => (
+         <View>
+           <Text style={styles.item}>- {item}</Text>
+         </View>
+       )}
+       renderSectionHeader={({section})=>(
+         <View style={styles.body}>
+           <Text style={styles.text}>{section.title}</Text>
+         </View>
+       )}
+       refreshControl={
+         <RefreshControl
+           refreshing={refreshing}
+           onRefresh={onrefresh}
+         />
+       }
+     />
+   );
+ };
+ 
+ const styles = StyleSheet.create({
+   sectio : {
+    margin : 5,
+   },
+   body:{
+     flex:1,
+     flexDirection: 'column',
+     backgroundColor : '#ffffff',
+     alignItems:'stretch',
+     margin : 10,
+   },
+   item : {
+      fontSize:20,
+      padding:20,
+      color:'#ff00ff',
+      textAlign:'center',
+   },
+   text : {
+     fontSize: 40,
+     backgroundColor:'#ff2aed',
+     textAlign:'center',
+     margin:10,
+   }
+ });
+ 
+ export default App;
+ 
