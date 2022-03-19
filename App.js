@@ -6,90 +6,63 @@
  * @flow strict-local
  */
 
- import React, {useState , refreshControl} from 'react';
+import React, { useState, refreshControl } from 'react';
 
- import {
-   StyleSheet,
-   Text,
-   View,
-   SectionList,
-   RefreshControl,
- } from 'react-native';
- 
- 
- const App = () => {
- 
-     const [refreshing,setrefreshing] = useState(false);
-     
-     const [DATA , setDATA ] = useState ([
-       {
-         title: 'title 1',
-         data: ['Item 1-1','Item 1-2'],
-       },
-       {
-         title: 'title 1',
-         data: ['Item 1-1','Item 1-2'],
-       },
-     ])
- 
-     const onrefresh = ()=>{
-       setrefreshing(true);
-       setDATA ([...DATA , {
-         title: 'title '+ DATA.length.toString(),
-         data: ['Item '+DATA.length.toString()+'-1','Item '+DATA.length.toString()+'-2']
-       }]);
-       setrefreshing(false);
-     }
- 
-   return (
-     <SectionList
-       style={styles.sectio}
-       keyExtractor={(item,index)=> index.toString()}
-       sections={DATA}
-       renderItem={({item}) => (
-         <View>
-           <Text style={styles.item}>- {item}</Text>
-         </View>
-       )}
-       renderSectionHeader={({section})=>(
-         <View style={styles.body}>
-           <Text style={styles.text}>{section.title}</Text>
-         </View>
-       )}
-       refreshControl={
-         <RefreshControl
-           refreshing={refreshing}
-           onRefresh={onrefresh}
-         />
-       }
-     />
-   );
- };
- 
- const styles = StyleSheet.create({
-   sectio : {
-    margin : 5,
-   },
-   body:{
-     flex:1,
-     flexDirection: 'column',
-     backgroundColor : '#ffffff',
-     alignItems:'stretch',
-     margin : 10,
-   },
-   item : {
-      fontSize:20,
-      padding:20,
-      color:'#ff00ff',
-      textAlign:'center',
-   },
-   text : {
-     fontSize: 40,
-     backgroundColor:'#ff2aed',
-     textAlign:'center',
-     margin:10,
-   }
- });
- 
- export default App;
- 
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  SectionList,
+  RefreshControl,
+} from 'react-native';
+
+
+const App = () => {
+  const [name,setname] = useState('');
+
+  return (
+    <View style={styles.body}>
+      <Text style={styles.text}>Enter your email :</Text>
+      <TextInput
+        style={styles.textinput}
+        onChangeText={(value)=>{setname(value)}}
+        placeholder='user email'
+      />
+      <Text style={styles.text}>Enter your password :</Text>
+      <TextInput
+        style={styles.textinput}
+        onChangeText={(value)=>{setname(value)}}
+        placeholder='password'
+        keyboardType='numeric'
+        secureTextEntry
+      />
+      <Text style={styles.text}>{name}</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+
+  body: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff',
+    margin: 15,
+  },
+  text: {
+    fontSize: 20,
+    margin: 10,
+    color: 'black',
+    textAlign: 'center',
+  },
+  textinput: {
+    width : 150,
+    borderWidth : 1,
+    textAlign :'center',
+    fontSize : 18,
+  }
+});
+
+export default App;
