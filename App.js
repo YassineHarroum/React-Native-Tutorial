@@ -20,6 +20,7 @@ import {
   Modal,
 } from 'react-native';
 
+import ModalComponent from './Components/ModalComponent'
 
 const App = () => {
   const [coordinate, setcoordinate] = useState({ email: '', password: '' });
@@ -44,7 +45,14 @@ const App = () => {
       style={styles.body}
       source={require('./img/background.png')}
     >
-      <Modal
+      <ModalComponent
+        visibility = {showWarning}
+        functionClose = {() =>
+          setShowWarning(false)}
+        functionMsg = {warningPassword ? 'Your Password is low' : 'Your adrees email is incorrect'}
+        functionPress = {() => { setShowWarning(!showWarning) }}
+      />
+      {/* <Modal
         visible={showWarning}
         transparent
         onRequestClose={() =>
@@ -58,7 +66,11 @@ const App = () => {
               <Text style={styles.text}>Warning !</Text>
             </View>
             <View style={styles.warning_body}>
-              <Text style={{ fontSize: 15, textAlign: 'center' }}>{warningPassword ? 'Your Password is low' : 'Your adrees email is incorrect'}</Text>
+              <Text style={
+                { fontSize: 15, textAlign: 'center' }
+              }>
+                {warningPassword ? 'Your Password is low' : 'Your adrees email is incorrect'}
+              </Text>
             </View>
             <Pressable
               onPress={() => { setShowWarning(!showWarning) }}
@@ -71,7 +83,8 @@ const App = () => {
           </View>
         </View>
 
-      </Modal>
+      </Modal> */}
+
       <Text style={styles.text}>User email :</Text>
       <TextInput
         style={styles.textinput}
@@ -84,7 +97,9 @@ const App = () => {
         Password :</Text>
       <TextInput
         style={styles.textinput}
-        onChangeText={(value) => setcoordinate({ email: '' + coordinate.email, password: value.toString() })}
+        onChangeText={(value) => {
+          setcoordinate({ email: '' + coordinate.email, password: value.toString() })
+        }}
         placeholder='password'
         keyboardType='numeric'
         secureTextEntry
@@ -179,7 +194,7 @@ const styles = StyleSheet.create({
     borderColor: '#01b5f1',
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
-  }
+  },
 });
 
 export default App;
