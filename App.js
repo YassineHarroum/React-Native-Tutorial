@@ -23,108 +23,104 @@ import {
 import ModalComponent from './Components/ModalComponent'
 
 const App = () => {
+
   const [coordinate, setcoordinate] = useState({ email: '', password: '' });
+
   const [submitted, setsubmitted] = useState(false);
+
   const [showWarning, setShowWarning] = useState(false);
-  const [warningPassword, setWarningPassword] = useState(false);
-  const X = '@';
+
+
+  const conditionEmail = {
+    CondLenghtEmail: coordinate.email.length > 6,
+    CondUsername: coordinate.email.slice(0, coordinate.email.indexOf('@')).length >= 1,
+    CondMailBoite: coordinate.email.slice(coordinate.email.indexOf('@') + 1, coordinate.email.indexOf('.')).length >= 2,
+    CondDest: coordinate.email.slice(coordinate.email.indexOf('.') + 1, (coordinate.email.length)).length >= 2,
+    CondEmailAtt: coordinate.email.includes('@'),
+    CondEmailPoint: coordinate.email.slice(coordinate.email.indexOf('@'), coordinate.email.length - 1).includes("."),
+  };
+
   const onPressHandler = () => {
-    if ((coordinate.email.includes(X)) && (coordinate.password.length > 3)) {
+    if ((conditionEmail.CondEmailAtt) && (coordinate.password.length > 3) && (conditionEmail.CondEmailPoint) &&
+      (conditionEmail.CondLenghtEmail) && (conditionEmail.CondUsername) && (conditionEmail.CondMailBoite) &&
+      (conditionEmail.CondDest)) {
       setsubmitted(!submitted);
-    } else if (coordinate.password.length <= 3) {
-      setShowWarning(!showWarning);
-      setWarningPassword(!warningPassword);
     } else {
       setShowWarning(!showWarning);
     }
-
-  };
+  }
 
   return (
     <ImageBackground
       style={styles.body}
-      source={require('./img/background.png')}
+      blurRadius={1}
+      // source={require('./img/background.png')}
+      source={{ uri: 'https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/rm373batch10-0001d-168.jpg?w=1200&h=1200&dpr=1&fit=clip&crop=default&fm=jpg&q=75&vib=3&con=3&usm=15&cs=srgb&bg=F4F4F3&ixlib=js-2.2.1&s=7277213dcbde79734555c84d62d94621' }}
     >
+
       <ModalComponent
-        visibility = {showWarning}
-        functionClose = {() =>
+        visibility={showWarning}
+        functionClose={() =>
           setShowWarning(false)}
-        functionMsg = {warningPassword ? 'Your Password is low' : 'Your adrees email is incorrect'}
-        functionPress = {() => { setShowWarning(!showWarning) }}
+        functionBoite={conditionEmail.CondMailBoite}
+        functionUserName={conditionEmail.CondUsername}
+        functionDest={conditionEmail.CondDest}
+        functionPassword={coordinate.password}
+
+        functionPress={() => { setShowWarning(!showWarning) }}
       />
-      {/* <Modal
-        visible={showWarning}
-        transparent
-        onRequestClose={() =>
-          setShowWarning(false)
-        }
-        animationType='slide'
-      >
-        <View style={styles.centered_view}>
-          <View style={styles.warning_modal}>
-            <View style={styles.warning_title}>
-              <Text style={styles.text}>Warning !</Text>
-            </View>
-            <View style={styles.warning_body}>
-              <Text style={
-                { fontSize: 15, textAlign: 'center' }
-              }>
-                {warningPassword ? 'Your Password is low' : 'Your adrees email is incorrect'}
-              </Text>
-            </View>
+      <View style={styles.containerSign}>
+
+
+        <Text style={styles.title}>User email :</Text>
+
+        <TextInput
+          style={styles.textinput}
+          onChangeText={(value) => {
+            setcoordinate({ email: value.toString(), password: coordinate.password })
+          }}
+          placeholder='  User email'
+        />
+
+        <Text style={styles.title}>
+          Password :
+        </Text>
+
+        <TextInput
+          style={styles.textinput}
+          onChangeText={(value) => {
+            setcoordinate({ email: coordinate.email, password: value.toString() })
+          }}
+          placeholder='  Password'
+          keyboardType='numeric'
+          secureTextEntry
+        />
+
+
+        <View style={styles.ViewButton}>
             <Pressable
-              onPress={() => { setShowWarning(!showWarning) }}
+              onPress={onPressHandler}
               hitSlop={{ top: 25, bottom: 25, right: 25, left: 25 }}
-              android_ripple='slide'
-              style={styles.press_Warning}
+              style={() => [
+                { backgroundColor: submitted ? '#b48b8b' : '#def4e4' },
+                { borderColor: submitted ? '#b48b8b' : '##def4e4' },
+
+                styles.button
+              ]}
             >
-              <Text style={{ fontSize: 20 }}>ok</Text>
+              <Text style={styles.text}>
+                {submitted ? 'clear' : 'Sign in'}
+              </Text>
             </Pressable>
-          </View>
         </View>
-
-      </Modal> */}
-
-      <Text style={styles.text}>User email :</Text>
-      <TextInput
-        style={styles.textinput}
-        onChangeText={(value) => {
-          setcoordinate({ email: value.toString(), password: '' + coordinate.password })
-        }}
-        placeholder='user email'
-      />
-      <Text style={styles.text}>
-        Password :</Text>
-      <TextInput
-        style={styles.textinput}
-        onChangeText={(value) => {
-          setcoordinate({ email: '' + coordinate.email, password: value.toString() })
-        }}
-        placeholder='password'
-        keyboardType='numeric'
-        secureTextEntry
-      />
-      <Pressable
-        onPress={onPressHandler}
-        hitSlop={{ top: 25, bottom: 25, right: 25, left: 25 }}
-        style={() => [
-          { backgroundColor: submitted ? '#b101f1' : '#01bff1' },
-          { borderColor: submitted ? '#b101f1' : '#01bff1' },
-
-          styles.button
-        ]}
-      >
-        <Text style={styles.text}>
-          {submitted ? 'clear' : 'Sign up'}
-        </Text>
-      </Pressable>
-      {submitted ?
-        <Text style={styles.text}>
-          you are sign as : {coordinate.email.slice(0, coordinate.email.indexOf("@"))}
-        </Text>
-        :
-        null
-      }
+        {submitted ?
+          <Text style={styles.text}>
+            you are sign as : {coordinate.email.slice(0, coordinate.email.indexOf("@"))}
+          </Text>
+          :
+          null
+        }
+      </View>
     </ImageBackground>
   );
 };
@@ -137,6 +133,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
 
   },
+  title: {
+    width: '72%',
+    margin: 10,
+    paddingTop: 10,
+  },
   text: {
     fontSize: 20,
     margin: 10,
@@ -144,57 +145,35 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   textinput: {
-    width: 250,
+    width: 300,
     borderWidth: 1,
-    borderRadius: 20,
-    textAlign: 'center',
+    borderRadius: 10,
+    borderColor: "#f4f4bd",
+    // borderColor: "#3e6787",
+    // borderColor: "#b48b8b",
+    // borderColor: "#f4d4bd",
+    // borderColor: "#def4e4",
     fontSize: 18,
+    paddingLeft: 15,
   },
   button: {
-    // backgroundColor: '#01bff1',
     width: 100,
     margin: 20,
-    borderWidth: 1,
-    // borderColor: '#01bff1',
+
     borderRadius: 15,
   },
-  centered_view: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#00000099'
+  containerSign :{
+    height:350,
+    padding:20,
+    borderRadius:20,
+    backgroundColor: '#ffffff',
+    opacity:0.95,
   },
-  warning_modal: {
-    width: 300,
-    height: 200,
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 20,
-    backgroundColor: '#fff'
-  },
-  warning_title: {
-    flex: 1,
-    backgroundColor: '#f10185',
-    borderWidth: 1,
-    borderColor: '#f10185',
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
-  },
-  warning_body: {
-    flex: 2,
-    height: 100,
-    justifyContent: 'center'
-  },
-  press_Warning: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#01b5f1',
-    borderWidth: 1,
-    borderColor: '#01b5f1',
-    borderBottomRightRadius: 20,
-    borderBottomLeftRadius: 20,
-  },
+  ViewButton:{
+    justifyContent:'center',
+    alignItems:'center',
+  }
+
 });
 
 export default App;

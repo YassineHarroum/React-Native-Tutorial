@@ -22,9 +22,34 @@ const ModalComponent = (props) => {
                         <Text style={styles.text}>Warning !</Text>
                     </View>
                     <View style={styles.warning_body}>
-                        <Text style={{ fontSize: 15, textAlign: 'center' }}>
-                            {props.functionMsg}
-                        </Text>
+                        {props.functionUserName?
+                            null
+                            :
+                            <Text style={{ fontSize: 15, textAlign: 'center' }}>
+                                - Please Enter a valide User name.
+                            </Text>
+                        }
+                        {props.functionBoite?
+                            null
+                            :
+                            <Text style={{ fontSize: 15, textAlign: 'center' }}>
+                                - Please Enter a valide adress mail.
+                            </Text>
+                        }
+                        {props.functionDest?
+                            null
+                            :
+                            <Text style={{ fontSize: 15, textAlign: 'center' }}>
+                                - Please Enter a valide Destination.
+                            </Text>
+                        }
+                        {props.functionPassword.length > 3?
+                            null
+                            :
+                            <Text style={{ fontSize: 15, textAlign: 'center' }}>
+                                - Please Enter a valide Password.
+                            </Text>
+                        }
                     </View>
                     <Pressable
                         onPress={props.functionPress}
